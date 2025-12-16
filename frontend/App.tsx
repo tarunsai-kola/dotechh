@@ -56,7 +56,7 @@ const App = () => {
       <Layout userRole={userRole} onLogout={handleLogout}>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={!userRole ? <Landing /> : <Navigate to={userRole === UserRole.STUDENT ? "/student/dashboard" : "/company/dashboard"} />} />
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
