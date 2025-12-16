@@ -33,12 +33,16 @@ app.use(xss());
 app.use('/uploads', express.static('uploads'));
 
 // Global Rate Limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // limit each IP to 1000 requests per windowMs
-  message: 'Too many requests from this IP, please try again later'
-});
-app.use('/api', limiter);
+// Only apply in development - Vercel has its own rate limiting
+if (process.env.NODE_ENV !== 'production') {
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 1000, // limit each IP to 1000 requests per windowMs
+    message: 'Too many requests from this IP, please try again later'
+  });
+  app.use('/api', limiter);
+}
+
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/doltec')
