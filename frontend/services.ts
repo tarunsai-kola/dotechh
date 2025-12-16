@@ -19,6 +19,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // Don't retry if the failed request was itself a refresh-token attempt
+    if (originalRequest.url?.includes('/auth/refresh-token')) {
+      localStorage.removeItem('user');
+      return Promise.reject(error);
+    }
+
     // If 401 (Unauthorized) and not already retried
     // Note: Backend might return 401 for invalid token, and 403 for other issues. 
     // We'll check for 401 here as usually that means token expired.
