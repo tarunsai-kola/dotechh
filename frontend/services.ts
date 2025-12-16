@@ -2,7 +2,10 @@
 import axios from 'axios';
 
 // Use environment variable for API URL, fallback to relative path for development
-const API_URL = import.meta.env.VITE_API_URL || '/api';
+// If VITE_API_URL is set (production), append /api to the backend URL
+const API_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
 
 const api = axios.create({
   baseURL: API_URL,
