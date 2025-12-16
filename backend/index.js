@@ -64,10 +64,11 @@ const http = require('http');
 const { initSocket } = require('./socket');
 
 const server = http.createServer(app);
-initSocket(server);
 
-// Only start the server if not in production (Vercel handles this)
+// Only initialize Socket.io in non-production environments
+// Vercel serverless doesn't support WebSocket connections
 if (process.env.NODE_ENV !== 'production') {
+  initSocket(server);
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
   });
